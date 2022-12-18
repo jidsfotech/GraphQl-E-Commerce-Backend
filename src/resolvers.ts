@@ -1,30 +1,42 @@
-import { Product, Categories, db } from "./db/db";
+import { ObjectId } from "mongodb";
 export const resolvers = {
     Query: {
-        products: (_parent: any, args: any, { db }: CtxArgs) => {
-            return db.products;
+        product: async (_parent: any, id: ObjectId, { dataSources: { products } }: any) => {
+            return await products.getProduct(id);
         },
-        categories: (_parent: any, args: any, { db }: CtxArgs) => {
-            return db.categories;
+
+        products: async (_parent: any, args: any, { dataSources: { products } }: any) => {
+            return await products.getProducts();
+        },
+
+        category: async (_parent: any, id: string, { dataSources: { categories } }: any) => {
+            return await categories.getCategory(id);
+        },
+
+        categories: async (_parent: any, args: any, { dataSources: { categories } }: any) => {
+            return await categories.getCategories();
         },
     },
 
     Product: {
-        category: ({ categoryId }: { categoryId: string }, _args: any, { db }: CtxArgs) => {
-            return db.categories.find((category) => category.id === categoryId)
+        category: async (_parent: any, id: ObjectId, { dataSources: { categories } }: any) => {
+            return await categories.getCategory(id);
         }
     },
 
     Category: {
-        products: ({ id: categoryId }: { id: string }, args: any, { db }: CtxArgs) => {
-            return db.products.filter((product) => product.categoryId === categoryId)
+        products: async (_parent: any, id: ObjectId, { dataSources: { products } }: any) => {
+            return await products.getProducts();
         }
-    }
-}
+    },
 
-export interface CtxArgs {
-    db: {
-        products: Product[]
-        categories: Categories[]
+    Mutation: {
+        createProduct: async (_parent: any, args: any, { dataSources: { products } }: any) => {
+            return await products.createProduct(args.product);
+        },
+
+        createCategory: async (_parent: any, args: any, { dataSources: { categories } }: any) => {
+            return await categories.createCategory(args.category);
+        }
     }
 }

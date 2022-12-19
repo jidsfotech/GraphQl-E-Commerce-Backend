@@ -29,7 +29,7 @@ const startServer = async () => {
 
   apolloServer.applyMiddleware({
     app,
-    path: '/api'
+    path: '/ec'
   });
 
   mongoose.connect(config.db_uri!)
@@ -40,8 +40,8 @@ const startServer = async () => {
       console.log('failed to connect to database...', error)
     })
 
-  httpServer.listen({ port: config.port || 9000 }, () =>
-    console.log(`Server listening on localhost:9000${apolloServer.graphqlPath}`)
+  httpServer.listen({ port: config.port }, () =>
+    console.log(`Server up and running on port: ${config.port}`)
   );
 }
 

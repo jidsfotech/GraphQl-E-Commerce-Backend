@@ -38,7 +38,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     yield apolloServer.start();
     apolloServer.applyMiddleware({
         app,
-        path: '/api'
+        path: '/ec'
     });
     mongoose_1.default.connect(config_1.config.db_uri)
         .then(() => {
@@ -47,6 +47,6 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
         .catch((error) => {
         console.log('failed to connect to database...', error);
     });
-    httpServer.listen({ port: config_1.config.port || 9000 }, () => console.log(`Server listening on localhost:9000${apolloServer.graphqlPath}`));
+    httpServer.listen({ port: config_1.config.port }, () => console.log(`Server up and running on port: ${config_1.config.port}`));
 });
 startServer();

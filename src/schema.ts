@@ -37,10 +37,32 @@ export const typeDefs = gql`
       products: [Product!]!
       category(id:ID): Category
       categories: [Category!]!
+      user(userId:ID): User!
+      users: [User!]!
+    }
+
+    input userData {
+        email: String!
+        password: String!
+        name: String
+    }
+
+    type User {
+        _id: ID!
+        email: String!
+        password: String!
+        name: String
+    }
+
+    type authData {
+        message: String!
+        token: String
     }
 
     type Mutation {
         createProduct(product:inputProduct): Product!
         createCategory(category:inputCategory): Category!
+        createUser(userData:userData): User!
+        login(authInfo:userData): authData!
     }
     `
